@@ -69,36 +69,26 @@ trait SmartEditor
   }
 
   public function uploadStoreHtml5(Request $request) {
-
-    // Log::info($request->all());    
-
-    $filename = $request->header('file-name');
-    Log::info($filename); 
-
-    $content = $request->getContent();
-
-    // Log::info($content);
-
     $url = '';
-    // $filename = rawurldecode($headers['file_name']);
-    // $filename_ext = strtolower(array_pop(explode('.',$filename)));
-    // $allow_file = array("jpg", "png", "bmp", "gif"); 
+    $file = new \stdClass;
+    $file->name = $request->header('file-name');
+    $file->content = $request->getContent();
 
-    // if(!in_array($filename_ext, $allow_file)) {
-    //   $url .= "NOTALLOW_".$filename;
-    //   return $url;
-    // } else {
-      $file = new \stdClass;
-      $file->name = $filename;
-      $file->content = $request->getContent();
+    $filename_ext = pathinfo($file->name, PATHINFO_EXTENSION);
+    $allow_file = array("jpg", "png", "bmp", "gif"); 
+
+    if(!in_array($filename_ext, $allow_file)) {
+      $url .= "NOTALLOW_".$file->name;
+      return $url;
+    } else {
 
       $filepath = 'public/tmp/editor/'.session()->getId();
-
       Storage::disk('local')->put($filepath."/".$file->name, $file->content);
-        $url .= '&bNewLine=true';
-        $url .= '&sFilename='.$file->name;
-        $url .= '&sFileURL='.Storage::url($filepath).'/'.$file->name;
-      
+      $url .= '&bNewLine=true';
+      $url .= '&sFilename='.$file->name;
+      $url .= '&sFileURL='.Storage::url($filepath).'/'.$file->name;
+
       return $url;
+    }
   }
 }
