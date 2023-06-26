@@ -1,4 +1,4 @@
-@extends('layouts.blank')
+@extends('editor.layout.blank')
 @section('content')
 <div id="pop_wrap">
 	<!-- header -->
