@@ -16,3 +16,9 @@ php artisan vendor:publish --provider="Pondol\Editor\EditorServiceProvider"
 ```
 php artisan storage:link
 ```
+
+
+####
+> https;//yourdomain/editor/smart-editor
+
+naver smart editor 가 정상적으로 노출되는 것을 확인했다면 이제 실제 프로제트에서 editor를 호출하여 작업해 보자

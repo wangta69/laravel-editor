@@ -1,4 +1,4 @@
-@extends('layouts.blank')
+@extends('editor.layout.blank')
 @section('content')
 
 {{ Form::open(['route'=>['editor.smarteditor'], 'method'=>'POST', 'enctype'=>'multipart/form-data', 'class'=>'']) }}
