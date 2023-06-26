@@ -22,6 +22,7 @@
     oAppRef: oEditors,
     elPlaceHolder: "ir1",
     sSkinURI: "/plugins/editor/smart-editor/SmartEditor2Skin.html",
+    sCSSBaseURI: "/plugins/editor/smart-editor/css/ko_KR",
     fCreator: "createSEditor2"
   });
 

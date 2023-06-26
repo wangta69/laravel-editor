@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'editor', 'as' => 'editor.', 'namespace' => 'App\Http\Controllers'], function () {
+Route::group(['prefix' => 'editor', 'as' => 'editor.', 'namespace' => 'App\Http\Controllers', 'middleware' => ['web']], function () {
   Route::get('smart-editor', array('uses'=>'SmartEditorController@main'))->name('smarteditor');
   Route::post('smart-editor', array('uses'=>'SmartEditorController@store'));
   Route::get('smart-editor/photo-upload', array('uses'=>'SmartEditorController@upload'))->name('smarteditor.photo');
