@@ -1,0 +1,30 @@
+{
+  "name": "wangta69/laravel-editor",
+  "description": "Naver SmartEditor for laravel",
+	"keywords": ["laravel", "smarteditor", "pondol"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pondol",
+      "email": "wangta69@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=6.0.0",
+  "kyslik/column-sortable": "^6.0",
+    "wangta69/php-thumbnail": "^1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pondol\\Editor\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Pondol\\Editor\\EditorServiceProvider"
+      ]
+    }
+  }
+}
