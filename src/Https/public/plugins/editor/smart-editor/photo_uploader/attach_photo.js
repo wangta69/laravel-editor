@@ -334,7 +334,7 @@
     	var tempFile,
     		sUploadURL;
     	
-    	sUploadURL= '/smart-editor/photo-upload/html5'; 	//upload URL
+    	sUploadURL= '/editor/smart-editor/photo-upload/html5'; 	//upload URL
     	
     	//파일을 하나씩 보내고, 결과를 받음.
     	for(var j=0, k=0; j < nImageInfoCnt; j++) {
