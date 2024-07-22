@@ -1,7 +1,6 @@
-@extends('editor.layout.blank')
+@extends('layouts.blank')
 @section('content')
-
-{{ Form::open(['route'=>['editor.smarteditor'], 'method'=>'POST', 'enctype'=>'multipart/form-data', 'class'=>'']) }}
+{{ Form::open(['route'=>['smarteditor'], 'method'=>'POST', 'enctype'=>'multipart/form-data', 'class'=>'']) }}
 <textarea name="ir1" id="ir1" style="width: 100%;">{{$data->ir1}}</textarea>
 <input type="button" onclick="submitContents(this);" value="서버로 내용 전송" />
 {{ Form::close() }}
@@ -22,7 +21,6 @@
     oAppRef: oEditors,
     elPlaceHolder: "ir1",
     sSkinURI: "/plugins/editor/smart-editor/SmartEditor2Skin.html",
-    sCSSBaseURI: "/plugins/editor/smart-editor/css/ko_KR",
     fCreator: "createSEditor2"
   });
 

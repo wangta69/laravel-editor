@@ -20,9 +20,10 @@ class EditorServiceProvider extends ServiceProvider {
    */
   public function register()
   {
-      $this->app->bind('editor', function($app) {
-          return new Editor;
-      });
+    // $this->app->bind('editor', function($app) {
+    $this->app->singleton('editor', function($app) {
+      return new Editor;
+    });
   }
 
 	/**
@@ -32,20 +33,23 @@ class EditorServiceProvider extends ServiceProvider {
    */
 	public function boot()
   {
-    if (!$this->app->routesAreCached()) {
-      require_once __DIR__ . '/Https/routes/web.php';
-    }
+    // if (!$this->app->routesAreCached()) {
+    //   require_once __DIR__ . '/Https/routes/web.php';
+    // }
+    $this->loadRoutesFrom(__DIR__.'/routes/web.php');
 
-      //set assets
+    $this->loadViewsFrom(__DIR__.'/resources/views/editor', 'editor');
+
+    // set assets
 		$this->publishes([
-      __DIR__.'/Https/public/plugins/editor/' => public_path('plugins/editor'),
+      __DIR__.'/public/plugins/editor/' => public_path('plugins/editor'),
     ], 'public');
 
-    // LOAD THE VIEWS
-      // - first the published views (in case they have any changes)
-    $this->publishes([
-      __DIR__.'/resources/views/editor' => resource_path('views/editor'),
-    ]);
+    // // LOAD THE VIEWS
+    //   // - first the published views (in case they have any changes)
+    // $this->publishes([
+    //   __DIR__.'/resources/views/editor' => resource_path('views/editor'),
+    // ]);
   }
 
 

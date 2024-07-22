@@ -23,6 +23,7 @@ trait SmartEditor
 
   public function main()
   {
+    
     $data = new \stdclass;
     $data->ir1 = '<p>서버의 데이타는 이렇게 호출됩니다';
     return view('editor.smart-editor.create', ['data' => $data]);
@@ -70,19 +71,26 @@ trait SmartEditor
 
   public function uploadStoreHtml5(Request $request) {
     $url = '';
+
     $file = new \stdClass;
     $file->name = $request->header('file-name');
     $file->content = $request->getContent();
 
+   // $filename_ext = end(explode('.', $name)); 
     $filename_ext = pathinfo($file->name, PATHINFO_EXTENSION);
     $allow_file = array("jpg", "png", "bmp", "gif"); 
-
+    Log::info($filename_ext);
     if(!in_array($filename_ext, $allow_file)) {
       $url .= "NOTALLOW_".$file->name;
+      Log::inof('notallow');
       return $url;
     } else {
 
+      // Log::info('editor session:'.session()->getId());
       $filepath = 'public/tmp/editor/'.session()->getId();
+      // Log::info('filepath:'.$filepath);
+      // Log::info('file->name:'.$file->name);
+      // Log::info('file->content:'.$file->content);
       Storage::disk('local')->put($filepath."/".$file->name, $file->content);
       $url .= '&bNewLine=true';
       $url .= '&sFilename='.$file->name;
