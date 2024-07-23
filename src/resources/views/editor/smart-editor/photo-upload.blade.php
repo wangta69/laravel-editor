@@ -1,6 +1,5 @@
 @extends('layouts.blank')
 @section('content')
-{{session()->getId();}}
 <div id="pop_wrap">
 	<!-- header -->
     <div id="pop_header">
