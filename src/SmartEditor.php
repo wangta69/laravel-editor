@@ -26,7 +26,7 @@ trait SmartEditor
     
     $data = new \stdclass;
     $data->ir1 = '<p>서버의 데이타는 이렇게 호출됩니다';
-    return view('editor.smart-editor.create', ['data' => $data]);
+    return view('editor::smart-editor.create', ['data' => $data]);
   }
 
   public function store(Request $request)
@@ -37,7 +37,7 @@ trait SmartEditor
 
   public function upload()
   {
-    return view('editor.smart-editor.photo-upload', []);
+    return view('editor::smart-editor.photo-upload', []);
   }
 
   public function uploadStore(Request $request) {
