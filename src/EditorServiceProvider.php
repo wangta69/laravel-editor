@@ -5,7 +5,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Blade;
 
-use Pondol\Editor\View\Components\EditorCommnents;
+use Pondol\Editor\View\Components\EditorComponents;
 
 
 class EditorServiceProvider extends ServiceProvider {
@@ -49,7 +49,7 @@ class EditorServiceProvider extends ServiceProvider {
       __DIR__.'/public/plugins/editor/' => public_path('plugins/editor'),
     ], 'public');
 
-    Blade::component('editor-comments', EditorCommnents::class);
+    Blade::component('editor-components', EditorComponents::class);
     //  <x-editor-comments name="story" :id=1 :attr="default"/>
     // // LOAD THE VIEWS
     //   // - first the published views (in case they have any changes)
