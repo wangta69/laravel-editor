@@ -3,7 +3,7 @@ namespace Pondol\Editor\View\Components;
 
 use Illuminate\View\Component;
 
-class EditorCommnents extends Component
+class EditorComponents extends Component
 {
   public $name;
   public $id;
