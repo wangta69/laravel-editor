@@ -25,7 +25,7 @@ class EditorComponents extends Component
     $attr=null, 
     $onsubmit='false', 
     $multi="false", 
-    $type='end'
+    $type=null
     ) {
 
     $this->name = $name;

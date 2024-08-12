@@ -53,12 +53,12 @@
   }
   @endif
 
-  function submitContentsField(elClickedObj) {
+  function submitContentsField(f) {
     @foreach($editors as $editor)
     oEditors.getById[{{$editor['id']}}].exec("UPDATE_CONTENTS_FIELD", []);
     @endforeach
     try {
-      elClickedObj.form.submit();
+      f.submit();
     } catch (e) {}
   }
 </script>
