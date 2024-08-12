@@ -6,13 +6,27 @@
   @endif
   >@if(isset($value)){{$value}}@endif</textarea>
 @section('scripts')
-@parent
+
+@if($onsubmit == 'true' || $editors)
 <script src="/plugins/editor/smart-editor/js/service/HuskyEZCreator.js"></script>
+@endif
 <script>
-  var oEditors = [];
+  // 폼 submit 하기 전 에디터의 내용을 textarea에 넣음. 
+@if('onsubmit' == 'true' && $editors)
+  @foreach($editors as $k=>$editor)
+  $('#{{$editor['id']}}').closest('form').on('submit', function() {
+    oEditors{{$k}}.getById["{{$editor['id']}}"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됩니다.
+  });
+  @endforeach
+@endif
+
+  @if($onsubmit == 'false' && $editors)
+
+  @foreach($editors as $k=>$editor)
+  var oEditors{{$k}} = [];
   nhn.husky.EZCreator.createInIFrame({
-    oAppRef: oEditors,
-    elPlaceHolder: "{{$id}}", // 적용될 textarea 의 ID값 입력
+    oAppRef: oEditors{{$k}},
+    elPlaceHolder: "{{$editor['id']}}", // 적용될 textarea 의 ID값 입력
     sSkinURI: "/plugins/editor/smart-editor/SmartEditor2Skin.html",
     sCSSBaseURI: "/plugins/editor/smart-editor/css/ko_KR",
     htParams : {
@@ -30,26 +44,23 @@
     },
     fCreator: "createSEditor2"
   });
+ @endforeach
 
-  // 폼 submit 하기 전 에디터의 내용을 textarea에 넣음. 
-  $('#{{$id}}').closest('form').on('submit', function() {
-    oEditors.getById["{{$id}}"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됩니다.
-  });
+  function updateContentsField() {
+    @foreach($editors as $k=>$editor)
+    oEditors{{$k}}.getById["{{$editor['id']}}"].exec("UPDATE_CONTENTS_FIELD", []);
+    @endforeach
+  }
+  @endif
 
-  // var oEditors = [];
-  // nhn.husky.EZCreator.createInIFrame({
-  //   oAppRef: oEditors,
-  //   elPlaceHolder: "description", // 적용될 textarea 의 ID값 입력
-  //   sSkinURI: "/plugins/editor/smart-editor/SmartEditor2Skin.html",
-  //   fCreator: "createSEditor2"
-  // });
-
-  // function submitContents(elClickedObj) {
-  //   oEditors.getById["description"].exec("UPDATE_CONTENTS_FIELD", []);
-  //   try {
-  //     elClickedObj.form.submit();
-  //   } catch (e) {}
-  // }
-
+  function submitContentsField(elClickedObj) {
+    @foreach($editors as $editor)
+    oEditors.getById[{{$editor['id']}}].exec("UPDATE_CONTENTS_FIELD", []);
+    @endforeach
+    try {
+      elClickedObj.form.submit();
+    } catch (e) {}
+  }
 </script>
+@parent
 @endsection
