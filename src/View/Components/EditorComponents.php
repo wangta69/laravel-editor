@@ -53,6 +53,7 @@ class EditorComponents extends Component
         session(['editor' => [['id'=>$this->id]]]);
         break;
       case 'single': // single mode 인경우는 하나만 추가 하고 끝냄
+        session()->forget('editor');
         $editors = [['id'=>$this->id]];
       case 'end': // 기존 sessiondmf $editors 변수에 저장
         $editor = session('editor');
