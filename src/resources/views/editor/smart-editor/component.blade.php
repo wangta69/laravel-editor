@@ -6,21 +6,22 @@
   @endif
   >@if(isset($value)){{$value}}@endif</textarea>
 @section('scripts')
-
-@if($onsubmit == 'true' || $editors)
+@parent
+@if($editors)
 <script src="/plugins/editor/smart-editor/js/service/HuskyEZCreator.js"></script>
 @endif
 <script>
-  // 폼 submit 하기 전 에디터의 내용을 textarea에 넣음. 
-@if('onsubmit' == 'true' && $editors)
+$(function(){
+// 폼 submit 하기 전 에디터의 내용을 textarea에 넣음. 
+@if($onsubmit == 'true' && $editors)
   @foreach($editors as $k=>$editor)
   $('#{{$editor['id']}}').closest('form').on('submit', function() {
     oEditors{{$k}}.getById["{{$editor['id']}}"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됩니다.
   });
   @endforeach
 @endif
-
-  @if($onsubmit == 'false' && $editors)
+})
+  @if($editors)
 
   @foreach($editors as $k=>$editor)
   var oEditors{{$k}} = [];
@@ -62,5 +63,5 @@
     } catch (e) {}
   }
 </script>
-@parent
+
 @endsection
