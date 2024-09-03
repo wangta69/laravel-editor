@@ -1,4 +1,4 @@
-@extends('layouts.blank')
+@extends('editor::layout.blank')
 @section('content')
 <div id="pop_wrap">
 	<!-- header -->
@@ -95,7 +95,7 @@ h1{color:#333;font-size:14px;letter-spacing:-1px}
 
 @section('scripts')
 @parent
-{{ Html::script('/plugins/editor/smart-editor/photo_uploader/jindo.min.js') }}
-{{ Html::script('/plugins/editor/smart-editor/photo_uploader/jindo.fileuploader.js') }}
-{{ Html::script('/plugins/editor/smart-editor/photo_uploader/attach_photo.js') }}
+<script src="/plugins/editor/smart-editor/photo_uploader/jindo.min.js"></script>
+<script src="/plugins/editor/smart-editor/photo_uploader/jindo.fileuploader.js"></script>
+<script src="/plugins/editor/smart-editor/photo_uploader/attach_photo.js"></script>
 @endsection

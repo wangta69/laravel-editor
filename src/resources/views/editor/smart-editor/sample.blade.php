@@ -1,9 +1,10 @@
-@extends('layouts.blank')
+@extends('editor::layout.blank')
 @section('content')
-{{ Form::open(['route'=>['editor.smarteditor'], 'method'=>'POST', 'enctype'=>'multipart/form-data', 'class'=>'']) }}
-<textarea name="ir1" id="ir1" style="width: 100%;">{{$data->ir1}}</textarea>
-<input type="button" onclick="submitContents(this);" value="서버로 내용 전송" />
-{{ Form::close() }}
+<form method="post" action="{{ route('editor.smarteditor') }}" enctype="multipart/form-data">
+  @csrf
+  <textarea name="ir1" id="ir1" style="width: 100%;">{{$data->ir1}}</textarea>
+  <input type="button" onclick="submitContents(this);" value="서버로 내용 전송" />
+</form>
 
 <!-- /banner-feature -->
 @endsection
@@ -14,7 +15,7 @@
 
 @section('scripts')
 @parent
-{{ Html::script('/plugins/editor/smart-editor/js/service/HuskyEZCreator.js') }}
+<script src="/plugins/editor/smart-editor/js/service/HuskyEZCreator.js"></script>
 <script>
   var oEditors = [];
   nhn.husky.EZCreator.createInIFrame({

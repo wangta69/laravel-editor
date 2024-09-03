@@ -1,5 +1,4 @@
-@extends('editor.layout.app')
-
+@extends('editor::layout.app')
 @section('page')
   @yield('content')
 @stop
