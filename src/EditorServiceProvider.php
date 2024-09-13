@@ -24,6 +24,13 @@ class EditorServiceProvider extends ServiceProvider {
    */
   public function register()
   {
+
+    if ($this->app->runningInConsole()) {
+      $this->commands([
+        Console\InstallCommand::class,
+        // Console\InstallCommand::class,
+      ]);
+    }
     // $this->app->bind('editor', function($app) {
     $this->app->singleton('editor', function($app) {
       return new Editor;
