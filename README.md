@@ -30,7 +30,7 @@ php artisan editor:install
   <button type="submit">Save</button>
 </form>
 ```
-![laravel WYSIWYG editor](./resources/assets/editor-sample.png)
+![laravel WYSIWYG editor](./assets/images/editor-sample.png)
 
 - for more [visit](https://www.onstory.fun/doc/programming/laravel/package.laraveleditor)
 
