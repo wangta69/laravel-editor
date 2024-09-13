@@ -1,5 +1,5 @@
 <?php
-namespace Pondol\Editor;
+namespace Pondol\Editor\Traits;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\File;

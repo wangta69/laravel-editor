@@ -8,7 +8,7 @@ use Storage;
 use Illuminate\Http\UploadedFile;
 use DB;
 use Illuminate\Support\Facades\Log;
-use Pondol\Editor\SmartEditor;
+use Pondol\Editor\Traits\SmartEditor;
 
 class SmartEditorController extends Controller
 {
