@@ -1,7 +1,7 @@
 {
   "name": "wangta69/laravel-editor",
   "description": "Naver SmartEditor for laravel",
-	"keywords": ["laravel", "smarteditor", "pondol", "naver", "네이버", "스마트에디터", "라라벨"],
+	"keywords": ["laravel", "smarteditor", "WYSIWYG", "pondol", "naver", "네이버", "스마트에디터", "라라벨"],
   "homepage": "https://www.onstory.fun/doc/programming/laravel/package.laraveleditor",
   "license": "MIT",
   "authors": [
