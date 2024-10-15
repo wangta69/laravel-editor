@@ -29,17 +29,16 @@ class InstallCommand extends Command
 
   public function handle()
   {
-    $composer = $this->argument('composer');
+
     $type = $this->argument('type');
-    if($composer === 'editor') {
-      switch($type) {
-        case 'full':
-          return $this->installLaravelEditor();
-        default:
-          return;
-      }
-    } 
-    return;
+
+    switch($type) {
+      case 'full':
+        return $this->installLaravelEditor();
+      default:
+        return;
+    }
+
   }
 
 
