@@ -10,7 +10,7 @@ class InstallCommand extends Command
    *
    * @var string
    */
-  protected $signature = 'pondol:install {composer=editor} {type=full}'; // full, simple, skip
+  protected $signature = 'pondol:install {composer} {type=full}'; // full, simple, skip
 
   /**
    * The console command description.
