@@ -8,7 +8,7 @@
 ## Installation
 ```
 composer require wangta69/laravel-editor
-php artisan pondol:install editor
+php artisan pondol:install-editor
 ```
 
 ## Tests
