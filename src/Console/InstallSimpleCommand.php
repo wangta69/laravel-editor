@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 // use Symfony\Component\Process\PhpExecutableFinder;
 // use Symfony\Component\Process\Process;
 
-class InstallCommand extends Command
+class InstallSimpleCommand extends Command
 {
   // use InstallsBladeStack;
 
@@ -17,7 +17,7 @@ class InstallCommand extends Command
    *
    * @var string
    */
-  protected $signature = 'pondol:install-editor';
+  protected $signature = 'pondol:install {composer=editor} {type=full}'; // full, simple, skip
 
   /**
    * The console command description.
@@ -25,6 +25,8 @@ class InstallCommand extends Command
    * @var string
    */
   protected $description = 'Install the Laravel Editor controllers and resources';
+
+  // protected $composer, $type;
 
 
   public function __construct()
@@ -34,7 +36,17 @@ class InstallCommand extends Command
 
   public function handle()
   {
-    return $this->installLaravelEditor();
+    $composer = $this->argument('composer');
+    $type = $this->argument('type');
+    if($composer === 'editor') {
+      switch($type) {
+        case 'full':
+          return $this->installLaravelEditor();
+        default:
+          return;
+      }
+    } 
+    return;
   }
 
 
