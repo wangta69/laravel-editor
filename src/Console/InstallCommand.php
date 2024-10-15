@@ -51,7 +51,7 @@ class InstallCommand extends Command
       '--force'=> true,
       '--provider' => 'Pondol\Editor\EditorServiceProvider'
     ]);
-    $this->info('The laravel editor installed successfully.'); 
+    $this->info("The pondol's laravel editor installed successfully."); 
   }
 
 }
