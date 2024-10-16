@@ -1,7 +1,6 @@
 <?php
 namespace Pondol\Editor\Traits;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Storage;
@@ -47,7 +46,7 @@ trait SmartEditor
     return ['error'=>false, 'url'=>$url];
   }
 
-  public function _uploadStoreHtml5(Request $request) {
+  public function _uploadStoreHtml5($request) {
     $url = '';
 
     $file = new \stdClass;
