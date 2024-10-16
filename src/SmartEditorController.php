@@ -2,14 +2,9 @@
 namespace Pondol\Editor;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\File;
-use Storage;
-use Illuminate\Http\UploadedFile;
-use DB;
-use Illuminate\Support\Facades\Log;
 use Pondol\Editor\Traits\SmartEditor;
 
+use App\Http\Controllers\Controller;
 class SmartEditorController extends Controller
 {
 
@@ -22,6 +17,31 @@ class SmartEditorController extends Controller
   public function __construct()
   {
       // $this->middleware('auth');
+  }
+
+  public function main()
+  {
+    $data = $this->_main();
+    return view('editor::smart-editor.sample', $data);
+  }
+
+
+
+  public function upload()
+  {
+    return view('editor::smart-editor.photo-upload', []);
+  }
+
+  public function uploadStore(Request $request) {
+    $result =  $this->_uploadStore($request);
+    if($result['error']) {
+      return redirect($result['error']);
+    }
+    return $result['url'];
+  }
+
+  public function uploadStoreHtml5(Request $request) {
+    return $this->_uploadStoreHtml5($request);
   }
 
 }
