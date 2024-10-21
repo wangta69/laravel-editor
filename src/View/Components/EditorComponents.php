@@ -78,8 +78,6 @@ class EditorComponents extends Component
         break;
     }
 
-    echo $this->template.PHP_EOL;
-    echo "==========================================".PHP_EOL;
     return view($viewurl, [
       'name' => $this->name,
       'id' => $this->id,
