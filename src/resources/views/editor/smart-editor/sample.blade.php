@@ -1,11 +1,12 @@
 @extends('editor::layout.blank')
 @section('content')
-<form method="post" action="{{ route('editor.smarteditor') }}" enctype="multipart/form-data">
-  @csrf
-  <textarea name="ir1" id="ir1" style="width: 100%;">{{$data->ir1}}</textarea>
-  <input type="button" onclick="submitContents(this);" value="서버로 내용 전송" />
-</form>
-
+<div style="height: 500px">
+  <form method="post" action="{{ route('editor.smarteditor') }}" enctype="multipart/form-data">
+    @csrf
+    <textarea name="ir1" id="ir1" style="width: 100%;">{{$data->ir1}}</textarea>
+    <input type="button" onclick="submitContents(this);" value="서버로 내용 전송" />
+  </form>
+</div>
 <!-- /banner-feature -->
 @endsection
 

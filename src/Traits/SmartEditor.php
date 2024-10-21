@@ -8,7 +8,7 @@ use Storage;
 trait SmartEditor
 {
 
-  public function _main()
+  public function _create()
   {
     $data = new \stdclass;
     $data->ir1 = '<p>서버의 데이타는 이렇게 호출됩니다';

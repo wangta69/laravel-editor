@@ -1,5 +1,9 @@
-# NAVER SMART Editor for Laravel
+# Wizwig Editor for Laravel
+> 현재 배포중인 에디터들을 라라벨에서 바로 사용할 수 있게 처리된 플러그인
 
+## 제공 Editor
+- Naver Smart Editor
+- Froala Editor
 ## document
 
 [공식사이트](https://www.onstory.fun/doc/programming/laravel/package.laraveleditor)
@@ -12,8 +16,8 @@ php artisan pondol:install-editor
 ```
 
 ## Tests
-> goto https://yourdomain/editor/smart-editor
-
+> for naver smart edigor :  https://yourdomain/editor/smart-editor
+> for naver smart edigor :  https://yourdomain/editor/froala
 
 ## Ex
 ### before
@@ -24,12 +28,20 @@ php artisan pondol:install-editor
 </form>
 ```
 ### after
+#### naver smart editor
 ```
 <form>
   @include ('editor::smart-editor.editor', ['name'=>'comment', 'id'=>'comment-id', 'value'=>'', 'attr'=>['class'=>'']])
   <button type="submit">Save</button>
 </form>
 ```
+#### froala editor
+```
+<form>
+  @include ('editor::froala.editor', ['name'=>'comment', 'id'=>'comment-id', 'value'=>'', 'attr'=>['class'=>'']])
+  <button type="submit">Save</button>
+</for
+
 ![laravel WYSIWYG editor](./assets/images/editor-sample.png)
 
 - for more [visit](https://www.onstory.fun/doc/programming/laravel/package.laraveleditor)
