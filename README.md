@@ -50,7 +50,7 @@ php artisan pondol:install-editor
   @include ('editor::froala.editor', ['name'=>'comment', 'id'=>'comment-id', 'value'=>'', 'attr'=>['class'=>'']])
   <button type="submit">Save</button>
 </for
-
+```
 ![laravel WYSIWYG editor](./assets/images/editor-sample.png)
 
 - for more [visit](https://www.onstory.fun/doc/programming/laravel/package.laraveleditor)
