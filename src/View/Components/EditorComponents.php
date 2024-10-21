@@ -5,6 +5,7 @@ use Illuminate\View\Component;
 
 class EditorComponents extends Component
 {
+  private $template;
   private $name;
   private $id;
   private $value;
@@ -19,6 +20,7 @@ class EditorComponents extends Component
    * @param $onsubmit  false: 수동으로 처리, true : submit시 자동으로 처리
    */
   public function __construct(
+    $template = null,
     $name=null, 
     $id=null, 
     $value=null,
@@ -27,7 +29,7 @@ class EditorComponents extends Component
     $multi="false", 
     $type=null
     ) {
-
+    $this->template = $template;
     $this->name = $name;
     $this->id = $id;
     $this->value = $value;
@@ -66,8 +68,19 @@ class EditorComponents extends Component
         session(['editor' =>  $editor]);
         break;
     }
-    
-    return view('editor::smart-editor.component', [
+
+    $viewurl = 'editor::smart-editor.component';
+    switch($this->template) {
+      case 'tinymce':
+        $viewurl = 'editor::tinymce.component';
+        break;
+      default: // smart-editor
+        break;
+    }
+
+    echo $this->template.PHP_EOL;
+    echo "==========================================".PHP_EOL;
+    return view($viewurl, [
       'name' => $this->name,
       'id' => $this->id,
       'value' => $this->value,

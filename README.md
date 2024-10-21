@@ -2,6 +2,7 @@
 > 현재 배포중인 에디터들을 라라벨에서 바로 사용할 수 있게 처리된 플러그인
 
 ## 제공 Editor
+- TinyMce
 - Naver Smart Editor
 - Froala Editor
 ## document
@@ -16,8 +17,9 @@ php artisan pondol:install-editor
 ```
 
 ## Tests
-> for naver smart edigor :  https://yourdomain/editor/smart-editor
-> for naver smart edigor :  https://yourdomain/editor/froala
+> for tinymce editor :  https://yourdomain/editor/tinymce
+> for naver smart editor :  https://yourdomain/editor/smart-editor
+> for naver smart editor :  https://yourdomain/editor/froala
 
 ## Ex
 ### before
@@ -28,6 +30,13 @@ php artisan pondol:install-editor
 </form>
 ```
 ### after
+#### tinymce editor
+```
+<form>
+  @include ('editor::tinymce.editor', ['name'=>'comment', 'id'=>'comment-id', 'value'=>'', 'attr'=>['class'=>'']])
+  <button type="submit">Save</button>
+</form>
+```
 #### naver smart editor
 ```
 <form>

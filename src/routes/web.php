@@ -19,8 +19,8 @@ Route::group(['prefix' => 'editor', 'as' => 'editor.', 'namespace' => 'Pondol\Ed
 
   Route::get('froala', array('uses'=>'Http\Controllers\FroalaEditorController@create'))->name('froala');
   Route::post('froala', array('uses'=>'Http\Controllers\FroalaEditorController@store'));
-  Route::get('froala/photo-upload', array('uses'=>'Http\Controllers\FroalaEditorControlle@upload'))->name('froala.photo');
-  Route::post('froala/photo-upload', array('uses'=>'Http\Controllers\FroalaEditorControlle@uploadStore'));
-  Route::post('froala/photo-upload/html5', array('uses'=>'Http\Controllers\FroalaEditorControlle@uploadStoreHtml5'));
+
+  Route::get('tinymce', array('uses'=>'Http\Controllers\TinymceEditorController@create'))->name('tinymce');
+  Route::post('tinymce', array('uses'=>'Http\Controllers\TinymceEditorController@store'));
 
 });
