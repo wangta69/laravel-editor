@@ -9,7 +9,7 @@
 @section('styles')
 @parent
 @if($editors)
-<link rel="stylesheet" href="/plugins/editor/richtext/runtime/richtexteditor_preview.css" />
+<!-- <link rel="stylesheet" href="/plugins/editor/richtext/runtime/richtexteditor_preview.css" /> -->
 <link rel="stylesheet" href="/plugins/editor/richtext/rte_theme_default.css" />
 @endif
 @endsection
@@ -24,6 +24,7 @@
 @endif
 <script>
 @if($editors)
+// var uploadhandlerpath = "/rte-upload.php"; // for rte-upload.js
 var editorcfg = {url_base: '/plugins/editor/richtext'};
 @foreach($editors as $k=>$editor)
 var editor{{$k}} = new RichTextEditor(document.getElementById("{{$editor['id']}}"), editorcfg);
