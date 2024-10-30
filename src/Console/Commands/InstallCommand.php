@@ -1,5 +1,5 @@
 <?php
-namespace Pondol\Editor\Console;
+namespace Pondol\Editor\Console\Commands;
 
 use Illuminate\Console\Command;
 

@@ -8,14 +8,6 @@ use Storage;
 trait SmartEditor
 {
 
-  public function _create()
-  {
-    $data = new \stdclass;
-    $data->ir1 = '<p>서버의 데이타는 이렇게 호출됩니다';
-
-    return ['data' => $data];
-  }
-
   public function _uploadStore($request) {
 
     $url = $request->get('callback').'?callback_func='.$request->get('callback_func');

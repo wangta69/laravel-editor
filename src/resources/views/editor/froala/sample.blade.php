@@ -6,7 +6,7 @@
 
     <textarea name="editor_content" id="edit"></textarea>
   </div>
-  <input type="submit"  value="서버로 내용 전송" />
+  <button type="submit">Submit </button>
 </form>
 <!-- /banner-feature -->
 @endsection

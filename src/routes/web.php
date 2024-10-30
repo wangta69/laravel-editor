@@ -10,17 +10,20 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'editor', 'as' => 'editor.', 'namespace' => 'Pondol\Editor', 'middleware' => ['web']], function () {
-  Route::get('smart-editor', array('uses'=>'Http\Controllers\SmartEditorController@create'))->name('smarteditor');
-  Route::post('smart-editor', array('uses'=>'Http\Controllers\SmartEditorController@store'));
-  Route::get('smart-editor/photo-upload', array('uses'=>'Http\Controllers\SmartEditorController@upload'))->name('smarteditor.photo');
-  Route::post('smart-editor/photo-upload', array('uses'=>'Http\Controllers\SmartEditorController@uploadStore'));
-  Route::post('smart-editor/photo-upload/html5', array('uses'=>'Http\Controllers\SmartEditorController@uploadStoreHtml5'));
 
-  Route::get('froala', array('uses'=>'Http\Controllers\FroalaEditorController@create'))->name('froala');
-  Route::post('froala', array('uses'=>'Http\Controllers\FroalaEditorController@store'));
+Route::get('smart-editor', array('uses'=>'SmartEditorController@create'))->name('smarteditor');
+Route::post('smart-editor', array('uses'=>'SmartEditorController@store'));
+Route::get('smart-editor/photo-upload', array('uses'=>'SmartEditorController@upload'))->name('smarteditor.photo');
+Route::post('smart-editor/photo-upload', array('uses'=>'SmartEditorController@uploadStore'));
+Route::post('smart-editor/photo-upload/html5', array('uses'=>'SmartEditorController@uploadStoreHtml5'));
 
-  Route::get('tinymce', array('uses'=>'Http\Controllers\TinymceEditorController@create'))->name('tinymce');
-  Route::post('tinymce', array('uses'=>'Http\Controllers\TinymceEditorController@store'));
+Route::get('froala', array('uses'=>'FroalaEditorController@create'))->name('froala');
+Route::post('froala', array('uses'=>'FroalaEditorController@store'));
 
-});
+Route::get('tinymce', array('uses'=>'TinymceEditorController@create'))->name('tinymce');
+Route::post('tinymce', array('uses'=>'TinymceEditorController@store'));
+
+
+Route::get('richtext', array('uses'=>'RichTextEditorController@create'))->name('richtext');
+Route::post('richtext', array('uses'=>'RichTextEditorController@store'));
+

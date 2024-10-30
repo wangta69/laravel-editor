@@ -2,9 +2,12 @@
 namespace Pondol\Editor;
 
 use Illuminate\Support\ServiceProvider;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 
+use Pondol\Editor\Console\Commands\InstallCommand;
 use Pondol\Editor\View\Components\EditorComponents;
 
 
@@ -24,17 +27,9 @@ class EditorServiceProvider extends ServiceProvider {
    */
   public function register()
   {
-
-    if ($this->app->runningInConsole()) {
-      $this->commands([
-        Console\InstallCommand::class,
-        // Console\InstallCommand::class,
-      ]);
-    }
-    // $this->app->bind('editor', function($app) {
-    $this->app->singleton('editor', function($app) {
-      return new Editor;
-    });
+    // $this->app->singleton('editor', function($app) {
+    //   return new Editor;
+    // });
   }
 
 	/**
@@ -44,25 +39,41 @@ class EditorServiceProvider extends ServiceProvider {
    */
 	public function boot()
   {
-    // if (!$this->app->routesAreCached()) {
-    //   require_once __DIR__ . '/Https/routes/web.php';
-    // }
-    $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+
+
+    $this->publishes([
+      __DIR__ . '/config/pondol-editor.php' => config_path('pondol-editor.php'),
+    ], 'config');
+    $this->mergeConfigFrom(
+      __DIR__ . '/config/pondol-editor.php',
+      'pondol-editor'
+    );
+
+    $this->loadEditorRoutes();
 
     $this->loadViewsFrom(__DIR__.'/resources/views/editor', 'editor');
 
     // set assets
 		$this->publishes([
       __DIR__.'/public/plugins/editor/' => public_path('plugins/editor'),
-    ], 'public');
+    ], 'public-plugins');
+
+    $this->commands([
+      InstallCommand::class,
+    ]);
 
     Blade::component('editor-components', EditorComponents::class);
-    //  <x-editor-comments name="story" :id=1 :attr="default"/>
-    // // LOAD THE VIEWS
-    //   // - first the published views (in case they have any changes)
-    // $this->publishes([
-    //   __DIR__.'/resources/views/editor' => resource_path('views/editor'),
-    // ]);
+  }
+
+  private function loadEditorRoutes()
+  {
+    $config = config('pondol-editor');
+
+    Route::prefix($config['prefix'])
+      ->as($config['as'])
+      ->middleware($config['middleware'])
+      ->namespace('Pondol\Editor\Http\Controllers')
+      ->group(__DIR__ . '/routes/web.php');
   }
 
 

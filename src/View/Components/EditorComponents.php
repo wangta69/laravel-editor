@@ -29,7 +29,7 @@ class EditorComponents extends Component
     $multi="false", 
     $type=null
     ) {
-    $this->template = $template;
+    $this->template = $template ?? config('pondol-editor.default-template');
     $this->name = $name;
     $this->id = $id;
     $this->value = $value;
@@ -69,14 +69,7 @@ class EditorComponents extends Component
         break;
     }
 
-    $viewurl = 'editor::smart-editor.component';
-    switch($this->template) {
-      case 'tinymce':
-        $viewurl = 'editor::tinymce.component';
-        break;
-      default: // smart-editor
-        break;
-    }
+    $viewurl = 'editor::'.$this->template.'.component';
 
     return view($viewurl, [
       'name' => $this->name,

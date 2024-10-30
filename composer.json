@@ -1,7 +1,7 @@
 {
   "name": "wangta69/laravel-editor",
   "description": "WysiWig Editors for laravel",
-	"keywords": ["laravel", "WYSIWYG", "Editor","froala", "tinymce", "naver", "네이버", "스마트에디터", "라라벨"],
+	"keywords": ["laravel", "WYSIWYG", "Editor","froala", "tinymce", "richtext", "naver", "네이버", "스마트에디터", "라라벨"],
   "homepage": "https://www.onstory.fun/doc/programming/laravel/package.laraveleditor",
   "license": "MIT",
   "authors": [

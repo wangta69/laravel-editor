@@ -20,8 +20,9 @@ class SmartEditorController extends Controller
 
   public function create()
   {
-    $data = $this->_create();
-    return view('editor::smart-editor.sample', $data);
+    $data = new \stdclass;
+    $data->ir1 = '<p>서버의 데이타는 이렇게 호출됩니다';
+    return view('editor::smart-editor.sample', ['data'=>$data]);
   }
 
   public function store(Request $request) {
