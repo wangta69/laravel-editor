@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 class TinymceEditorController extends Controller
 {
 
-  use SmartEditor;
   /**
    * Create a new controller instance.
    *
