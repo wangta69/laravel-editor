@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 
+use Pondol\Editor\Services\Editor;
 use Pondol\Editor\Console\Commands\InstallCommand;
 use Pondol\Editor\View\Components\EditorComponents;
 
@@ -27,9 +28,9 @@ class EditorServiceProvider extends ServiceProvider {
    */
   public function register()
   {
-    // $this->app->singleton('editor', function($app) {
-    //   return new Editor;
-    // });
+    $this->app->singleton('editor', function () {
+      return new Editor();
+    });
   }
 
 	/**
@@ -39,8 +40,6 @@ class EditorServiceProvider extends ServiceProvider {
    */
 	public function boot()
   {
-
-
     $this->publishes([
       __DIR__ . '/config/pondol-editor.php' => config_path('pondol-editor.php'),
     ], 'config');
@@ -75,6 +74,4 @@ class EditorServiceProvider extends ServiceProvider {
       ->namespace('Pondol\Editor\Http\Controllers')
       ->group(__DIR__ . '/routes/web.php');
   }
-
-
 }
