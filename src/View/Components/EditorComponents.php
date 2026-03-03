@@ -1,84 +1,86 @@
 <?php
+
 namespace Pondol\Editor\View\Components;
 
 use Illuminate\View\Component;
 
 class EditorComponents extends Component
 {
-  private $template;
-  private $name;
-  private $id;
-  private $value;
-  private $attr;
-  private $onsubmit;
-  private $multi;
-  private $start;
-  private $end;
+    public $template;
 
-  private $editor = [];
-  /**
-   * @param $onsubmit  false: 수동으로 처리, true : submit시 자동으로 처리
-   */
-  public function __construct(
-    $template = null,
-    $name=null, 
-    $id=null, 
-    $value=null,
-    $attr=null, 
-    $onsubmit='false', 
-    $multi="false", 
-    $type=null
+    public $name;
+
+    public $id;
+
+    public $value;
+
+    public $attr;
+
+    public $onsubmit;
+
+    public $type;
+
+    public $options; // [추가] 에디터 설정을 유동적으로 넘기기 위함
+
+    public function __construct(
+        $template = null,
+        $name = null,
+        $id = null,
+        $value = null,
+        $attr = null,
+        $onsubmit = 'false',
+        $type = 'single', // 기본값을 single로 설정
+        $options = []     // [추가] 업로드 URL, 높이 등 커스텀 설정
     ) {
-    $this->template = $template ?? config('pondol-editor.default-template');
-    $this->name = $name;
-    $this->id = $id;
-    $this->value = $value;
-    $this->attr = $attr;
-    $this->onsubmit = $onsubmit;
-    $this->type = $type;
-  }
-
-  /**
-   * Get the view / contents that represent the component.
-   *
-   * @return \Illuminate\Contracts\View\View|\Closure|string
-   */
-  public function render()
-  {
-    
-    $editors = [];
-    // if($this->multi == 'true') { // multi 일경우 sesion에 현재 값들을 저장해 둔다.
-    
-    switch($this->type) {
-      case 'start': // 기존 세션을 제거하고 
-        session()->forget('editor');
-        session(['editor' => [['id'=>$this->id]]]);
-        break;
-      case 'single': // single mode 인경우는 하나만 추가 하고 끝냄
-        session()->forget('editor');
-        $editors = [['id'=>$this->id]];
-      case 'end': // 기존 sessiondmf $editors 변수에 저장
-        $editor = session('editor');
-        $editor[] = ['id'=>$this->id];
-        $editors = $editor;
-        break;
-      default: // 세션 계속 추가
-        $editor = session('editor');
-        $editor[] = ['id'=>$this->id];
-        session(['editor' =>  $editor]);
-        break;
+        $this->template = $template ?? config('pondol-editor.default-template');
+        $this->name = $name;
+        $this->id = $id ?? 'editor_'.uniqid(); // ID가 없으면 고유 ID 생성
+        $this->value = $value;
+        $this->attr = $attr;
+        $this->onsubmit = $onsubmit;
+        $this->type = $type;
+        $this->options = $options;
     }
 
-    $viewurl = 'editor::'.$this->template.'.component';
+    public function render()
+    {
+        $editors = [];
 
-    return view($viewurl, [
-      'name' => $this->name,
-      'id' => $this->id,
-      'value' => $this->value,
-      'attr' => $this->attr,
-      'onsubmit' => $this->onsubmit,
-      'editors' => $editors,
-      'index' => $editors ? count($editors): 0
-    ]);
-  }
+        // 세션 기반 에디터 트래킹 로직 정교화
+        switch ($this->type) {
+            case 'start':
+                session(['editor' => [['id' => $this->id]]]);
+                $editors = session('editor');
+                break;
+            case 'single':
+                session()->forget('editor');
+                $editors = [['id' => $this->id]];
+                break;
+            case 'end':
+                $currentEditors = session('editor', []);
+                $currentEditors[] = ['id' => $this->id];
+                $editors = $currentEditors;
+                session()->forget('editor'); // 렌더링 후 세션 비우기
+                break;
+            default:
+                $currentEditors = session('editor', []);
+                $currentEditors[] = ['id' => $this->id];
+                session(['editor' => $currentEditors]);
+                $editors = $currentEditors;
+                break;
+        }
+
+        $viewurl = 'editor::'.$this->template.'.component';
+
+        return view($viewurl, [
+            'name' => $this->name,
+            'id' => $this->id,
+            'value' => $this->value,
+            'attr' => $this->attr,
+            'onsubmit' => $this->onsubmit,
+            'editors' => $editors,
+            'index' => count($editors),
+            'options' => $this->options, // 뷰에 옵션 전달
+        ]);
+    }
 }
