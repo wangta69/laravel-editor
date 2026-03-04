@@ -1,63 +1,54 @@
-<textarea name="{{$name}}" id="{{$id}}" 
-  @if(isset($attr)) 
-    @foreach($attr as $k => $v)
-      {{$k}}="{{$v}}" 
-    @endforeach 
-  @endif
-  >@if(isset($value)){{$value}}@endif</textarea>
-
+{{-- resources/views/editor/tinymce/component.blade.php --}}
+<textarea name="{{ $name }}" id="{{ $id }}"
+    @if (isset($attr)) @foreach ($attr as $k => $v) {{ $k }}="{{ $v }}" @endforeach @endif>
+@if (isset($value))
+{{ $value }}
+@endif
+</textarea>
 
 @section('scripts')
-@parent
-@if($editors)
-<script src="/plugins/editor/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/accordion/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/advlist/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/anchor/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/autolink/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/autoresize/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/autosave/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/charmap/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/code/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/codesample/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/directionality/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/emoticons/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/fullscreen/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/help/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/image/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/importcss/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/insertdatetime/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/link/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/lists/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/media/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/nonbreaking/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/pagebreak/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/preview/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/quickbars/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/save/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/searchreplace/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/table/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/visualblocks/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/visualchars/plugin.min.js" referrerpolicy="origin"></script>
-<script src="/plugins/editor/tinymce/plugins/wordcount/plugin.min.js" referrerpolicy="origin"></script>
-@endif
-<script>
+    @parent
+    @if ($editors)
+        {{-- 메인 JS 하나만 로드하면 플러그인은 내부적으로 자동 로드됩니다 --}}
+        <script src="/plugins/editor/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    @endif
+    <script>
+        (function() {
+            function initTinyMCE() {
+                if (typeof tinymce === 'undefined') {
+                    setTimeout(initTinyMCE, 100); // 로드될 때까지 잠시 대기
+                    return;
+                }
 
-$(function(){
+                @foreach ($editors as $k => $editor)
+                    tinymce.init({
+                        selector: '#{{ $editor['id'] }}',
+                        plugins: 'preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help quickbars emoticons',
+                        toolbar: 'undo redo | blocks | bold italic strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | emoticons charmap | removeformat',
+                        images_file_types: 'jpg,svg,webp',
+                        license_key: 'gpl',
+                        language: 'ko_KR', // 한글 팩이 있다면 적용
 
-  @if($editors)
+                        // [길라 전용 다크 테마 설정]
+                        skin: 'oxide-dark',
+                        content_css: 'dark',
 
-  @foreach($editors as $k=>$editor)
-  tinymce.init({
-    selector: '#{{$editor['id']}}',  // change this value according to your HTML
-    plugins: 'preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media  codesample table charmap pagebreak nonbreaking anchor  insertdatetime advlist lists  wordcount help charmap quickbars emoticons',
-    images_file_types: 'jpg,svg,webp',
-    license_key: 'gpl',
-  });
-  @endforeach
-  @endif
-});
+                        setup: function(editor) {
+                            // 내용이 변경될 때마다 원본 textarea에 동기화
+                            editor.on('change', function() {
+                                editor.save();
+                            });
+                        }
+                    });
+                @endforeach
+            }
 
-</script>
-
+            // defer 환경 대응: 페이지 로드 완료 후 실행
+            if (document.readyState === "complete") {
+                initTinyMCE();
+            } else {
+                window.addEventListener('load', initTinyMCE);
+            }
+        })();
+    </script>
 @endsection

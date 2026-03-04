@@ -1,67 +1,69 @@
-<textarea name="{{$name}}" id="{{$id}}" 
-  @if(isset($attr)) 
-    @foreach($attr as $k => $v)
-      {{$k}}="{{$v}}" 
-    @endforeach 
-  @endif
-  >@if(isset($value)){{$value}}@endif</textarea>
+{{-- resources/views/editor/smart-editor/component.blade.php --}}
+<textarea name="{{ $name }}" id="{{ $id }}"
+    @if (isset($attr)) @foreach ($attr as $k => $v)
+      {{ $k }}="{{ $v }}" 
+    @endforeach @endif>
+@if (isset($value))
+{{ $value }}
+@endif
+</textarea>
+
 @section('scripts')
-@parent
-@if($editors)
-<script src="/plugins/editor/smart-editor/js/service/HuskyEZCreator.js"></script>
-@endif
-<script>
-$(function(){
-// 폼 submit 하기 전 에디터의 내용을 textarea에 넣음. 
-@if($onsubmit == 'true' && $editors)
-  @foreach($editors as $k=>$editor)
-  $('#{{$editor['id']}}').closest('form').on('submit', function() {
-    oEditors{{$k}}.getById["{{$editor['id']}}"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됩니다.
-  });
-  @endforeach
-@endif
-})
-  @if($editors)
+    @parent
+    @if ($editors)
+        <script src="/plugins/editor/smart-editor/js/service/HuskyEZCreator.js"></script>
+    @endif
+    <script>
+        // 전역 에디터 객체 통합 (여러 에디터가 이 배열 하나를 공유해야 getById가 작동함)
+        window.oEditors = window.oEditors || [];
 
-  @foreach($editors as $k=>$editor)
-  var oEditors{{$k}} = [];
-  nhn.husky.EZCreator.createInIFrame({
-    oAppRef: oEditors{{$k}},
-    elPlaceHolder: "{{$editor['id']}}", // 적용될 textarea 의 ID값 입력
-    sSkinURI: "/plugins/editor/smart-editor/SmartEditor2Skin.html",
-    sCSSBaseURI: "/plugins/editor/smart-editor/css/ko_KR",
-    htParams : {
-      bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-      bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-      bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-      //aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
-      fOnBeforeUnload : function(){
-        //alert("완료!");
-      }
-    }, //boolean
-    fOnAppLoad : function(){
-      //예제 코드
-      //oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
-    },
-    fCreator: "createSEditor2"
-  });
- @endforeach
+        (function() {
+            function initSmartEditor() {
+                @if ($editors)
+                    @foreach ($editors as $k => $editor)
+                        nhn.husky.EZCreator.createInIFrame({
+                            oAppRef: window.oEditors,
+                            elPlaceHolder: "{{ $editor['id'] }}",
+                            sSkinURI: "/plugins/editor/smart-editor/SmartEditor2Skin.html",
+                            sCSSBaseURI: "/plugins/editor/smart-editor/css/ko_KR",
+                            htParams: {
+                                bUseToolbar: true,
+                                bUseVerticalResizer: true,
+                                bUseModeChanger: true
+                            },
+                            fCreator: "createSEditor2"
+                        });
 
-  function updateContentsField() {
-    @foreach($editors as $k=>$editor)
-    oEditors{{$k}}.getById["{{$editor['id']}}"].exec("UPDATE_CONTENTS_FIELD", []);
-    @endforeach
-  }
-  @endif
+                        // 폼 제출 시 자동 동기화 (Native JS로 구현하여 jQuery defer 대응)
+                        var targetTextarea = document.getElementById("{{ $editor['id'] }}");
+                        if (targetTextarea && targetTextarea.form) {
+                            targetTextarea.form.addEventListener('submit', function() {
+                                if (window.oEditors.getById["{{ $editor['id'] }}"]) {
+                                    window.oEditors.getById["{{ $editor['id'] }}"].exec("UPDATE_CONTENTS_FIELD",
+                                        []);
+                                }
+                            });
+                        }
+                    @endforeach
+                @endif
+            }
 
-  function submitContentsField(f) {
-    @foreach($editors as $editor)
-    oEditors.getById[{{$editor['id']}}].exec("UPDATE_CONTENTS_FIELD", []);
-    @endforeach
-    try {
-      f.submit();
-    } catch (e) {}
-  }
-</script>
+            // 페이지 로드 완료 후 실행 (defer된 jQuery가 로드될 시간을 벌어줌)
+            if (document.readyState === "complete") {
+                initSmartEditor();
+            } else {
+                window.addEventListener('load', initSmartEditor);
+            }
+        })();
 
+        // 외부에서 호출 가능한 범용 업데이트 함수
+        function updateContentsField() {
+            if (!window.oEditors || !window.oEditors.getById) return;
+            @foreach ($editors as $editor)
+                if (window.oEditors.getById["{{ $editor['id'] }}"]) {
+                    window.oEditors.getById["{{ $editor['id'] }}"].exec("UPDATE_CONTENTS_FIELD", []);
+                }
+            @endforeach
+        }
+    </script>
 @endsection
