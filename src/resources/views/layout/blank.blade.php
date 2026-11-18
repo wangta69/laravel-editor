@@ -1,6 +1,7 @@
+{{-- src/resources/views/editor/layout/blank.blade.php --}}
 @extends('editor::layout.app')
 @section('page')
-  @yield('content')
+    @yield('content')
 @stop
 
 @section('styles')

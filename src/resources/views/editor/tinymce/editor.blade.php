@@ -1,33 +1,27 @@
-{{-- resources/views/editor/tinymce/editor.blade.php --}}
-<textarea name="{{ $name }}" id="{{ $id }}"
-    @if (isset($attr)) @foreach ($attr as $k => $v) {{ $k }}="{{ $v }}" @endforeach @endif>
-@if (isset($value))
-{{ $value }}
-@endif
-</textarea>
+@php
+    $base = rtrim(config('pondol-editor.assets.base_url', '/plugins/editor'), '/');
+    $opts = array_merge(
+        config('pondol-editor.editors.tinymce', []),
+        [
+            'theme' => config('pondol-editor.theme', 'light'),
+            'uploadUrl' => route('editor.upload', ['driver' => 'tinymce']),
+        ],
+        $options ?? [],
+    );
+@endphp
 
-@section('scripts')
-    @parent
-    <script src="/plugins/editor/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-        (function() {
-            function initSingleTinyMCE() {
-                if (typeof tinymce === 'undefined') return;
+@include('editor::partials.textarea', [
+    'name' => $name,
+    'id' => $id,
+    'value' => $value ?? null,
+    'attr' => $attr ?? [],
+    'options' => $opts,
+])
 
-                tinymce.init({
-                    selector: '#{{ $id }}',
-                    plugins: 'preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help quickbars emoticons',
-                    license_key: 'gpl',
-                    skin: 'oxide-dark',
-                    content_css: 'dark',
-                    setup: function(editor) {
-                        editor.on('change', function() {
-                            editor.save();
-                        });
-                    }
-                });
-            }
-            window.addEventListener('load', initSingleTinyMCE);
-        })();
-    </script>
-@endsection
+@include('editor::partials.assets', [
+    'driver' => 'tinymce',
+    'styles' => [],
+    'scripts' => [$base . '/tinymce/tinymce.min.js'],
+    'initScript' =>
+        '<script>PondolEditor.init("tinymce", ' . json_encode($id) . ', ' . json_encode($opts) . ');</script>',
+])

@@ -1,0 +1,100 @@
+/* Pondol Laravel Editor - Core & Theme Styles */
+.pondol-editor-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+/* Bootstrap 5 + Summernote 드롭다운/모달 충돌 공통 보정 */
+.note-editor .dropdown-toggle::after {
+  display: none !important;
+}
+.note-modal {
+  z-index: 100001 !important;
+}
+.note-modal.open {
+  display: block !important;
+  opacity: 1 !important;
+}
+.note-modal-backdrop {
+  z-index: 100000 !important;
+}
+
+/* [Dark Theme] Summernote */
+.pondol-editor-theme-dark .note-editor.note-frame {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background-color: #1b263b !important;
+}
+.pondol-editor-theme-dark .note-toolbar {
+  background-color: #2a3b57 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #fff !important;
+}
+.pondol-editor-theme-dark .note-editable {
+  background-color: #1b263b !important;
+  color: #e0e1dd !important;
+}
+.pondol-editor-theme-dark .note-btn {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  color: #e0e1dd !important;
+}
+.pondol-editor-theme-dark .note-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+.pondol-editor-theme-dark .note-editor .dropdown-menu {
+  background-color: #2a3b57 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e0e1dd !important;
+}
+
+/* [Dark Theme] SunEditor */
+.pondol-editor-theme-dark .sun-editor {
+  border-color: rgba(255, 255, 255, 0.14);
+  background-color: #1b263b;
+  color: #e0e1dd;
+}
+.pondol-editor-theme-dark .sun-editor .se-toolbar {
+  background-color: #2a3b57;
+  outline-color: rgba(255, 255, 255, 0.12);
+}
+.pondol-editor-theme-dark .sun-editor .se-btn {
+  color: #e0e1dd;
+}
+.pondol-editor-theme-dark .sun-editor .se-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.pondol-editor-theme-dark .sun-editor .se-wrapper .se-wrapper-inner {
+  background-color: #1b263b;
+  color: #e0e1dd;
+}
+
+/* [Dark Theme] EasyMDE */
+.pondol-editor-theme-dark .EasyMDEContainer .editor-toolbar {
+  background-color: #2a3b57;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.pondol-editor-theme-dark .EasyMDEContainer .editor-toolbar button {
+  color: #e0e1dd;
+}
+.pondol-editor-theme-dark .EasyMDEContainer .CodeMirror {
+  background-color: #1b263b;
+  color: #e0e1dd;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.pondol-editor-theme-dark .EasyMDEContainer .CodeMirror-cursor {
+  border-left-color: #e0e1dd;
+}
+
+/* Editor.js 컨테이너 */
+.pondol-editorjs-holder {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  padding: 12px 16px;
+  background-color: #fff;
+  min-height: 250px;
+}
+.pondol-editor-theme-dark .pondol-editorjs-holder {
+  background-color: #1b263b;
+  color: #e0e1dd;
+  border-color: rgba(255, 255, 255, 0.14);
+}

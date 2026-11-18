@@ -3,24 +3,25 @@
 namespace Pondol\Editor\View\Components;
 
 use Illuminate\View\Component;
+use Pondol\Editor\Services\Editor;
 
 class EditorComponents extends Component
 {
-    public $template;
+    public string $template;
 
-    public $name;
+    public ?string $name;
 
-    public $id;
+    public string $id;
 
-    public $value;
+    public mixed $value;
 
-    public $attr;
+    public mixed $attr;
 
-    public $onsubmit;
+    public string $onsubmit;
 
-    public $type;
+    public string $type;
 
-    public $options; // [추가] 에디터 설정을 유동적으로 넘기기 위함
+    public array $options;
 
     public function __construct(
         $template = null,
@@ -29,58 +30,58 @@ class EditorComponents extends Component
         $value = null,
         $attr = null,
         $onsubmit = 'false',
-        $type = 'single', // 기본값을 single로 설정
-        $options = []     // [추가] 업로드 URL, 높이 등 커스텀 설정
+        $type = 'single',
+        $options = []
     ) {
-        $this->template = $template ?? config('pondol-editor.default-template');
+        $this->template = $template ?? config('pondol-editor.default-template', 'suneditor');
         $this->name = $name;
-        $this->id = $id ?? 'editor_'.uniqid(); // ID가 없으면 고유 ID 생성
+        $this->id = $id ?: 'editor_'.uniqid();
         $this->value = $value;
         $this->attr = $attr;
-        $this->onsubmit = $onsubmit;
-        $this->type = $type;
-        $this->options = $options;
+        $this->onsubmit = (string) $onsubmit;
+        $this->type = (string) $type;
+        $this->options = is_array($options) ? $options : [];
     }
 
     public function render()
     {
-        $editors = [];
+        /** @var Editor $manager */
+        $manager = app('editor');
 
-        // 세션 기반 에디터 트래킹 로직 정교화
         switch ($this->type) {
             case 'start':
-                session(['editor' => [['id' => $this->id]]]);
-                $editors = session('editor');
-                break;
             case 'single':
-                session()->forget('editor');
-                $editors = [['id' => $this->id]];
+                $manager->resetInstances();
+                $editors = $manager->registerInstance($this->id, $this->template);
                 break;
+
             case 'end':
-                $currentEditors = session('editor', []);
-                $currentEditors[] = ['id' => $this->id];
-                $editors = $currentEditors;
-                session()->forget('editor'); // 렌더링 후 세션 비우기
-                break;
             default:
-                $currentEditors = session('editor', []);
-                $currentEditors[] = ['id' => $this->id];
-                session(['editor' => $currentEditors]);
-                $editors = $currentEditors;
+                $editors = $manager->registerInstance($this->id, $this->template);
                 break;
         }
 
-        $viewurl = 'editor::'.$this->template.'.component';
+        $index = count($editors);
+
+        if ($this->type === 'single' || $this->type === 'end') {
+            $manager->resetInstances();
+        }
+
+        $viewurl = 'editor::editor.'.$this->template.'.component';
+        if (! view()->exists($viewurl)) {
+            $viewurl = 'editor::editor.'.$this->template.'.editor';
+        }
 
         return view($viewurl, [
+            'template' => $this->template,
             'name' => $this->name,
             'id' => $this->id,
             'value' => $this->value,
             'attr' => $this->attr,
             'onsubmit' => $this->onsubmit,
             'editors' => $editors,
-            'index' => count($editors),
-            'options' => $this->options, // 뷰에 옵션 전달
+            'index' => $index,
+            'options' => $this->options,
         ]);
     }
 }

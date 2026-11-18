@@ -1,7 +1,22 @@
 {
   "name": "wangta69/laravel-editor",
-  "description": "WysiWig Editors for laravel",
-	"keywords": ["laravel", "WYSIWYG", "Editor","froala", "tinymce", "richtext", "naver", "네이버", "스마트에디터", "라라벨"],
+  "description": "WysiWig, Markdown and Block Editors for Laravel",
+  "keywords": [
+    "laravel",
+    "WYSIWYG",
+    "Editor",
+    "suneditor",
+    "summernote",
+    "markdown",
+    "easymde",
+    "cherry-markdown",
+    "vditor",
+    "editorjs",
+    "smarteditor",
+    "네이버",
+    "스마트에디터",
+    "라라벨"
+  ],
   "homepage": "https://www.onstory.fun/packages/laravel-editor",
   "license": "MIT",
   "authors": [
@@ -13,7 +28,11 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=7.0.0"
+    "php": "^8.1",
+    "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/http": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/filesystem": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/view": "^10.0|^11.0|^12.0|^13.0"
   },
   "autoload": {
     "psr-4": {
@@ -24,7 +43,22 @@
     "laravel": {
       "providers": [
         "Pondol\\Editor\\EditorServiceProvider"
-      ]
+      ],
+      "aliases": {
+        "Editor": "Pondol\\Editor\\Facades\\Editor"
+      }
     }
+  },
+  "require-dev": {
+    "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
+    "phpunit/phpunit": "^10.5|^11.0|^12.0|^13.0"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Pondol\\Editor\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
   }
 }
